@@ -1,0 +1,6 @@
+POST http://localhost:3001/chat
+Content-Type: application/json
+
+{
+  "history": [{ type: "user", content: "How are you?" }]
+}
