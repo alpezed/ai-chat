@@ -5,6 +5,7 @@ import { ChatMessages } from "./components/chat-messages";
 import { hc } from "hono/client";
 import type { AppType } from "../app";
 import type { ChatMessage } from "@prisma/client";
+import { ChatSidebar } from "./components/chat-sidebar";
 
 declare global {
   interface Window {
@@ -19,7 +20,6 @@ const chatId = window.chatId;
 const initialMessages = window.messages;
 
 function Chat() {
-  console.log({ chatId, initialMessages });
   const [chatMessages, setChatMessages] =
     useState<ChatMessage[]>(initialMessages);
 
@@ -81,11 +81,16 @@ function Chat() {
   };
 
   return (
-    <div className="container prose prose-gray prose-sm prose-pre:text-base max-w-none flex h-full w-full flex-col items-center gap-6 bg-default-background pt-12 pr-6 pl-6">
-      <ChatHeader />
-      <div className="flex w-full max-w-[768px] grow shrink-0 basis-0 flex-col items-start relative">
-        <ChatMessages messages={chatMessages} />
-        <ChatInput onSubmit={onSubmit} />
+    <div className="flex h-screen w-screen">
+      <ChatSidebar />
+      <div className="flex-1 flex flex-col">
+        <div className="container prose prose-gray prose-sm prose-pre:text-base max-w-none flex h-full w-full flex-col items-center gap-6 bg-default-background pt-12 pr-6 pl-6">
+          <ChatHeader />
+          <div className="flex w-full max-w-[768px] grow shrink-0 basis-0 flex-col items-start relative">
+            <ChatMessages messages={chatMessages} />
+            <ChatInput onSubmit={onSubmit} />
+          </div>
+        </div>
       </div>
     </div>
   );
