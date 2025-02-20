@@ -80,9 +80,17 @@ export const deleteChat = async (c: Context) => {
     return c.json({ message: "Chat ID is required" }, 400);
   }
 
-  await prisma.chat.delete({
-    where: { id: chatId },
+  await prisma.chatMessage.deleteMany({
+    where: {
+      chatId,
+    },
   });
 
-  return c.status(204);
+  await prisma.chat.delete({
+    where: {
+      id: chatId,
+    },
+  });
+
+  return c.json({ message: "Chat deleted" });
 };

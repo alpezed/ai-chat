@@ -6,7 +6,7 @@ import { ChatSidebar } from "./components/chat-sidebar";
 import { ChatHeader } from "./components/chat-header";
 import { ChatInput } from "./components/chat-input";
 import { ChatMessages } from "./components/chat-messages";
-import type { AppType } from "../app";
+import { client } from "../utils/client";
 
 declare global {
   interface Window {
@@ -16,9 +16,8 @@ declare global {
   }
 }
 
-const client = hc<AppType>("http://localhost:3001/");
 const $post = client.api.v1.chat.$post;
-const $chatTitle = client.api.v1.chat["chat-title"];
+const $chatTitle = client.api.v1.chat["chat-title"].$put;
 
 const chatId = window.chatId;
 const initialMessages = window.messages;
@@ -36,13 +35,12 @@ function Chat() {
     const prompt = data.get("prompt") as string;
 
     if (chatMessages.length === 0) {
-      $chatTitle
-        .$post({
-          json: {
-            chatId,
-            prompt,
-          },
-        })
+      $chatTitle({
+        json: {
+          chatId,
+          prompt,
+        },
+      })
         .then(response => response.json())
         .then(data => {
           setChats(prevChats =>
@@ -109,7 +107,7 @@ function Chat() {
       <ChatSidebar chats={chats} />
       <div className="flex-1 flex flex-col">
         <div className="container prose prose-gray prose-sm prose-pre:text-base max-w-none flex h-full w-full flex-col items-center gap-6 bg-default-background pt-12 pr-6 pl-6">
-          <ChatHeader />
+          <ChatHeader chatId={chatId} />
           <div className="flex w-full max-w-[768px] grow shrink-0 basis-0 flex-col items-start relative">
             <ChatMessages messages={chatMessages} />
             <ChatInput onSubmit={onSubmit} />

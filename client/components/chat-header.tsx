@@ -1,4 +1,22 @@
-export function ChatHeader() {
+import { client } from "../../utils/client";
+
+export function ChatHeader({ chatId }: { chatId: string }) {
+  const onDeleteChat = async () => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this chat?"
+    );
+    if (confirm) {
+      const result = await client.api.v1.chat[":chatId"].$delete({
+        param: { chatId },
+      });
+      if (result.ok) {
+        const allChats =
+          chatId !== window.chats[0].id ? window.chats[0] : window.chats[1];
+        window.location.href = `/chat/${allChats.id}`;
+      }
+    }
+  };
+
   return (
     <div className="flex w-full max-w-[768px] items-center gap-4">
       <div className="flex grow shrink-0 basis-0 items-center gap-2">
@@ -35,12 +53,9 @@ export function ChatHeader() {
       </div>
       <div className="flex items-center gap-2">
         <button
-          className="group/af9405b1 flex h-8 w-8 cursor-pointer items-center justify-center gap-2 rounded border-none bg-transparent hover:bg-neutral-50 active:bg-neutral-100 disabled:cursor-default disabled:bg-neutral-200 hover:disabled:cursor-default hover:disabled:bg-neutral-200 active:disabled:cursor-default active:disabled:bg-neutral-200"
+          className="flex h-8 w-8 cursor-pointer items-center justify-center gap-2 rounded border-none bg-transparent hover:bg-neutral-50 active:bg-neutral-100 disabled:cursor-default disabled:bg-neutral-200 hover:disabled:cursor-default hover:disabled:bg-neutral-200 active:disabled:cursor-default active:disabled:bg-neutral-200"
           type="button"
-          id="radix-:R9puja:"
-          aria-haspopup="menu"
-          aria-expanded="false"
-          data-state="closed"
+          onClick={onDeleteChat}
         >
           <span className="text-[18px] font-[500] leading-[18px] text-neutral-600 group-disabled/af9405b1:text-neutral-400 icon-module_root__7C4BA">
             <svg
@@ -59,7 +74,6 @@ export function ChatHeader() {
               <circle cx={5} cy={12} r={1} />
             </svg>
           </span>
-          <div className="hidden text-[16px] font-[400] leading-[16px] text-neutral-500 group-disabled/af9405b1:text-neutral-400 loader-module_root__-0Kak" />
         </button>
       </div>
     </div>
