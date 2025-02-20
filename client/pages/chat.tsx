@@ -1,7 +1,7 @@
 import { render, useState } from "hono/jsx/dom";
 import type { ChatMessage, Chat as PrismaChat } from "@prisma/client";
 
-import { client } from "@/utils/client";
+import { client } from "@/lib/client";
 
 import { ChatSidebar } from "../components/chat/chat-sidebar";
 import { ChatHeader } from "../components/chat/chat-header";

@@ -7,7 +7,7 @@ import remarkRehype from "remark-rehype";
 import rehypeHighlight from "rehype-highlight";
 import { unified } from "unified";
 import { PrismaClient } from "@prisma/client";
-import { togetherAiModel } from "@/utils/ai";
+import { togetherAiModel } from "@/lib/ai";
 
 const prisma = new PrismaClient();
 
