@@ -28,7 +28,7 @@ export function ChatMessages({ messages }: { messages?: ChatMessage[] }) {
                   </svg>
                 </span>
               </div>
-              <div className="flex grow shrink-0 basis-0 items-center gap-4 pt-1.5">
+              <div className="flex grow shrink-0 basis-0 items-center gap-4 pt-1">
                 <div
                   className="flex [&>*:first-child]:mt-0 flex-col gap-2 grow shrink-0 basis-0 text-body font-body text-default-font"
                   dangerouslySetInnerHTML={{ __html: message.content }}
@@ -58,7 +58,7 @@ export function ChatMessages({ messages }: { messages?: ChatMessage[] }) {
               </span>
             </div>
             <div className="flex grow shrink-0 basis-0 flex-col items-start gap-2">
-              <div className="flex w-full flex-col items-start pt-1.5">
+              <div className="flex w-full flex-col items-start pt-1">
                 <span className="grow shrink-0 basis-0 text-body font-body text-default-font">
                   <div
                     className="[&>*:first-child]:mt-0"

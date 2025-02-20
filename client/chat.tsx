@@ -1,11 +1,12 @@
 import { render, useState } from "hono/jsx/dom";
+import { hc } from "hono/client";
+import type { ChatMessage, Chat as PrismaChat } from "@prisma/client";
+
+import { ChatSidebar } from "./components/chat-sidebar";
 import { ChatHeader } from "./components/chat-header";
 import { ChatInput } from "./components/chat-input";
 import { ChatMessages } from "./components/chat-messages";
-import { hc } from "hono/client";
 import type { AppType } from "../app";
-import type { ChatMessage, Chat as PrismaChat } from "@prisma/client";
-import { ChatSidebar } from "./components/chat-sidebar";
 
 declare global {
   interface Window {
@@ -16,6 +17,8 @@ declare global {
 }
 
 const client = hc<AppType>("http://localhost:3001/");
+const $post = client.api.v1.chat.$post;
+const $chatTitle = client.api.v1.chat["chat-title"];
 
 const chatId = window.chatId;
 const initialMessages = window.messages;
@@ -33,7 +36,7 @@ function Chat() {
     const prompt = data.get("prompt") as string;
 
     if (chatMessages.length === 0) {
-      client["chat-title"]
+      $chatTitle
         .$post({
           json: {
             chatId,
@@ -59,7 +62,7 @@ function Chat() {
 
     form.reset();
 
-    const response = await client.chat.$post({
+    const response = await $post({
       json: {
         history: [...chatMessages, userMessage],
         chatId,
