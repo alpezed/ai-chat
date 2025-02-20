@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = "file:./app.db"
 }
 
 model ChatMessage {
@@ -27,6 +27,7 @@ model Chat {
   id        String        @id @default(cuid())
   createdAd DateTime      @default(now())
   updatedAt DateTime      @updatedAt
+  title     String        @default("New Chat")
   messages  ChatMessage[]
 }
 
