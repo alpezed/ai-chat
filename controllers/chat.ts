@@ -5,7 +5,6 @@ import rehypeStringify from "rehype-stringify";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeHighlight from "rehype-highlight";
-import rehypeHighlightCodeLines from "rehype-highlight-code-lines";
 import { unified } from "unified";
 import { PrismaClient } from "@prisma/client";
 import { togetherAiModel } from "../utils/ai";
@@ -72,4 +71,18 @@ export const createChat = async (c: Context) => {
       },
     });
   });
+};
+
+export const deleteChat = async (c: Context) => {
+  const { chatId } = c.req.param();
+
+  if (!chatId) {
+    return c.json({ message: "Chat ID is required" }, 400);
+  }
+
+  await prisma.chat.delete({
+    where: { id: chatId },
+  });
+
+  return c.status(204);
 };
