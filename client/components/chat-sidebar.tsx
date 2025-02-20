@@ -5,7 +5,6 @@ export function ChatSidebar({
 }: {
   chats: Pick<Chat, "id" | "title">[];
 }) {
-  console.log({ chats });
   return (
     <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col">
       {/* Top section */}
@@ -44,7 +43,12 @@ export function ChatSidebar({
       </div>
 
       {/* New Chat button */}
-      <button className="mx-4 justify-center text-sm flex items-center gap-2 mb-4 px-4 py-2 bg-gray-900 text-white rounded-xl hover:bg-gray-800">
+      <button
+        className="mx-4 cursor-pointer justify-center text-sm flex items-center gap-2 mb-4 px-4 py-2 bg-gray-900 text-white rounded-xl hover:bg-gray-800"
+        onClick={() => {
+          window.location.href = "/chat";
+        }}
+      >
         <svg
           className="w-4 h-4"
           fill="none"
@@ -63,18 +67,22 @@ export function ChatSidebar({
 
       {/* Chat list */}
       <div className="flex-1 overflow-y-auto px-4">
-        <div className="space-y-2">
-          {/* Example chat items */}
-          <button className="w-full cursor-pointer text-sm text-left px-3 py-2 rounded-xl hover:bg-gray-200 group">
+        {/* Example chat items */}
+        {chats?.map(chat => (
+          <button
+            key={chat.id}
+            onClick={() => (window.location.href = `/chat/${chat.id}`)}
+            className={`w-full cursor-pointer text-sm text-left px-3 py-2 rounded-xl hover:bg-gray-200 group ${chat.id === window.chatId ? "bg-gray-200" : ""}`}
+          >
             <div className="flex items-center gap-3">
               <div className="flex-1 overflow-hidden">
                 <div className="truncate text-sm font-medium text-gray-900">
-                  Chat Title Goes Here
+                  {chat.title}
                 </div>
               </div>
             </div>
           </button>
-        </div>
+        ))}
       </div>
 
       {/* User section */}

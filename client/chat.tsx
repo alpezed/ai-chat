@@ -19,17 +19,36 @@ const client = hc<AppType>("http://localhost:3001/");
 
 const chatId = window.chatId;
 const initialMessages = window.messages;
-const chats = window.chats;
+const initialChats = window.chats;
 
 function Chat() {
   const [chatMessages, setChatMessages] =
     useState<ChatMessage[]>(initialMessages);
+  const [chats, setChats] = useState(initialChats);
 
   const onSubmit = async (event: Event) => {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
     const data = new FormData(form);
     const prompt = data.get("prompt") as string;
+
+    if (chatMessages.length === 0) {
+      client["chat-title"]
+        .$post({
+          json: {
+            chatId,
+            prompt,
+          },
+        })
+        .then(response => response.json())
+        .then(data => {
+          setChats(prevChats =>
+            prevChats.map(chat =>
+              chat.id === chatId ? { ...chat, title: data.chat.title } : chat
+            )
+          );
+        });
+    }
 
     const userMessage = {
       role: "user",
@@ -43,7 +62,7 @@ function Chat() {
     const response = await client.chat.$post({
       json: {
         history: [...chatMessages, userMessage],
-        chatId: chatId,
+        chatId,
       },
     });
 

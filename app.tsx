@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
 import { streamText } from "hono/streaming";
-import { streamText as generateText } from "ai";
+import { streamText as generateStream, generateText } from "ai";
 import { togetherai } from "@ai-sdk/togetherai";
 import rehypeStringify from "rehype-stringify";
 import remarkParse from "remark-parse";
@@ -16,6 +16,8 @@ import ChatPage from "./pages/chat";
 
 const app = new Hono();
 const prisma = new PrismaClient();
+
+const togetherAiModel = togetherai("meta-llama/Llama-3.3-70B-Instruct-Turbo");
 
 app.use("/static/*", serveStatic({ root: "./" }));
 
@@ -59,7 +61,26 @@ app.get("/chat/:chatId?", async c => {
     <ChatPage chatId={chatId} messages={chat.messages} chats={chats} />
   );
 });
-const routes = app.post("/chat", async c => {
+
+const chatTitleRoutes = app.post("/chat-title", async c => {
+  const { chatId, prompt } = await c.req.json();
+
+  const { text } = await generateText({
+    model: togetherAiModel,
+    system:
+      "You write simple, clear, and concise content. Do NOT wrap the title in any quotes or special characters",
+    prompt: `Generate a very short title based on the following prompt or question sent by the user: ${prompt}`,
+  });
+  const chat = await prisma.chat.update({
+    where: { id: chatId },
+    data: {
+      title: text,
+    },
+  });
+  return c.json({ chat });
+});
+
+const chatRoutes = app.post("/chat", async c => {
   const { history, chatId } = await c.req.json();
   const userMessage = history[history.length - 1];
 
@@ -71,8 +92,8 @@ const routes = app.post("/chat", async c => {
     },
   });
 
-  const { textStream } = await generateText({
-    model: togetherai("meta-llama/Llama-3.3-70B-Instruct-Turbo"),
+  const { textStream } = await generateStream({
+    model: togetherAiModel,
     messages: history,
   });
 
@@ -104,7 +125,11 @@ const routes = app.post("/chat", async c => {
     });
   });
 });
+
 app.get("/", c => c.html(<IndexPage />));
 
 export default app;
-export type AppType = typeof routes;
+
+export const routes = [chatRoutes, chatTitleRoutes] as const;
+
+export type AppType = (typeof routes)[number];
