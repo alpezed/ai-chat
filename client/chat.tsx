@@ -4,13 +4,14 @@ import { ChatInput } from "./components/chat-input";
 import { ChatMessages } from "./components/chat-messages";
 import { hc } from "hono/client";
 import type { AppType } from "../app";
-import type { ChatMessage } from "@prisma/client";
+import type { ChatMessage, Chat as PrismaChat } from "@prisma/client";
 import { ChatSidebar } from "./components/chat-sidebar";
 
 declare global {
   interface Window {
     chatId: string;
     messages: ChatMessage[];
+    chats: Pick<PrismaChat, "id" | "title">[];
   }
 }
 
@@ -18,6 +19,7 @@ const client = hc<AppType>("http://localhost:3001/");
 
 const chatId = window.chatId;
 const initialMessages = window.messages;
+const chats = window.chats;
 
 function Chat() {
   const [chatMessages, setChatMessages] =
@@ -82,7 +84,7 @@ function Chat() {
 
   return (
     <div className="flex h-screen w-screen">
-      <ChatSidebar />
+      <ChatSidebar chats={chats} />
       <div className="flex-1 flex flex-col">
         <div className="container prose prose-gray prose-sm prose-pre:text-base max-w-none flex h-full w-full flex-col items-center gap-6 bg-default-background pt-12 pr-6 pl-6">
           <ChatHeader />

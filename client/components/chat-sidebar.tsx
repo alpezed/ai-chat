@@ -1,4 +1,11 @@
-export function ChatSidebar() {
+import type { Chat } from "@prisma/client";
+
+export function ChatSidebar({
+  chats,
+}: {
+  chats: Pick<Chat, "id" | "title">[];
+}) {
+  console.log({ chats });
   return (
     <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col">
       {/* Top section */}

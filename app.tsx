@@ -40,6 +40,10 @@ app.get("/chat/:chatId?", async c => {
     return c.html(<h1>Chat not found</h1>);
   }
 
+  const chats = await prisma.chat.findMany({
+    select: { id: true, title: true },
+  });
+
   for (const message of chat.messages) {
     const htmlFile = await unified()
       .use(remarkParse)
@@ -51,7 +55,9 @@ app.get("/chat/:chatId?", async c => {
     message.content = htmlFile.toString();
   }
 
-  return c.html(<ChatPage chatId={chatId} messages={chat.messages} />);
+  return c.html(
+    <ChatPage chatId={chatId} messages={chat.messages} chats={chats} />
+  );
 });
 const routes = app.post("/chat", async c => {
   const { history, chatId } = await c.req.json();

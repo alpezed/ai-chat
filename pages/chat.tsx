@@ -1,20 +1,21 @@
 import { type PropsWithChildren } from "hono/jsx";
 import Layout from "./shared/layout";
-import type { ChatMessage } from "@prisma/client";
+import type { ChatMessage, Chat as PrismaChat } from "@prisma/client";
 
-type Chat = PropsWithChildren<{
+type ChatProps = PropsWithChildren<{
   chatId: string;
   messages: ChatMessage[];
+  chats: Pick<PrismaChat, "id" | "title">[];
 }>;
 
-export default function ChatPage(props: Chat) {
+export default function ChatPage(props: ChatProps) {
   return (
     <Layout>
       <script
         dangerouslySetInnerHTML={{
-          __html: `window.chatId = ${JSON.stringify(
-            props.chatId
-          )}; window.messages = ${JSON.stringify(props.messages)}`,
+          __html: `window.chatId = ${JSON.stringify(props.chatId)}; 
+          window.messages = ${JSON.stringify(props.messages)}; 
+          window.chats = ${JSON.stringify(props.chats)}`,
         }}
       />
       <div id="chat"></div>
