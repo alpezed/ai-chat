@@ -1,12 +1,12 @@
 import { render, useState } from "hono/jsx/dom";
-import { hc } from "hono/client";
 import type { ChatMessage, Chat as PrismaChat } from "@prisma/client";
 
-import { ChatSidebar } from "./components/chat-sidebar";
-import { ChatHeader } from "./components/chat-header";
-import { ChatInput } from "./components/chat-input";
-import { ChatMessages } from "./components/chat-messages";
-import { client } from "../utils/client";
+import { client } from "@/utils/client";
+
+import { ChatSidebar } from "../components/chat/chat-sidebar";
+import { ChatHeader } from "../components/chat/chat-header";
+import { ChatInput } from "../components/chat/chat-input";
+import { ChatMessages } from "../components/chat/chat-messages";
 
 declare global {
   interface Window {

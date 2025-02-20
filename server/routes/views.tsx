@@ -6,8 +6,8 @@ import rehypeHighlight from "rehype-highlight";
 import { unified } from "unified";
 import { PrismaClient } from "@prisma/client";
 
-import ChatPage from "../pages/chat";
-import IndexPage from "../pages";
+import ChatPage from "../view/chat";
+import IndexPage from "../view";
 
 const app = new Hono();
 const prisma = new PrismaClient();

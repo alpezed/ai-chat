@@ -1,4 +1,5 @@
 import { globSync } from "node:fs";
+import { fileURLToPath, URL } from "url";
 
 import { defineConfig } from "vite";
 import devServer from "@hono/vite-dev-server";
@@ -23,7 +24,6 @@ export default defineConfig(({ mode }) => {
       },
     };
   }
-
   return {
     server: {
       port: 3001,
@@ -31,9 +31,14 @@ export default defineConfig(({ mode }) => {
     plugins: [
       devServer({
         adapter: bunAdapter,
-        entry: "./app.tsx",
+        entry: "./server/app.tsx",
       }),
       tailwindcss(),
     ],
+    resolve: {
+      alias: {
+        "@": fileURLToPath(new URL("./", import.meta.url)),
+      },
+    },
   };
 });

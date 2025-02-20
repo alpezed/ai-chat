@@ -1,4 +1,4 @@
-import { client } from "../../utils/client";
+import { client } from "../../../utils/client";
 
 export function ChatHeader({ chatId }: { chatId: string }) {
   const onDeleteChat = async () => {

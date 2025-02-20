@@ -67,7 +67,6 @@ export function ChatSidebar({
 
       {/* Chat list */}
       <div className="flex-1 overflow-y-auto px-4">
-        {/* Example chat items */}
         {chats?.map(chat => (
           <button
             key={chat.id}

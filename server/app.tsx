@@ -6,7 +6,7 @@ import viewRoutes from "./routes/views";
 
 const app = new Hono();
 
-app.use("/static/*", serveStatic({ root: "./" }));
+app.use("/static/*", serveStatic({ root: "../" }));
 
 app.route("/", viewRoutes);
 

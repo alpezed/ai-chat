@@ -1,6 +1,7 @@
 import { type PropsWithChildren } from "hono/jsx";
-import Layout from "./shared/layout";
 import type { ChatMessage, Chat as PrismaChat } from "@prisma/client";
+
+import Layout from "./shared/layout";
 
 type ChatProps = PropsWithChildren<{
   chatId: string;
@@ -22,7 +23,7 @@ export default function ChatPage(props: ChatProps) {
       {import.meta.env.PROD ? (
         <script type="module" src="/static/client.js"></script>
       ) : (
-        <script type="module" src="/client/chat.tsx"></script>
+        <script type="module" src="/client/pages/chat.tsx"></script>
       )}
     </Layout>
   );
