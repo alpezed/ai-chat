@@ -34,6 +34,10 @@ function Chat() {
     const data = new FormData(form);
     const prompt = data.get("prompt") as string;
 
+    if (!prompt) {
+      return;
+    }
+
     if (chatMessages.length === 0) {
       $chatTitle({
         json: {
