@@ -19,11 +19,14 @@ const prisma = new PrismaClient();
 const app = new Hono<{ Variables: AuthSession }>();
 
 app.get("/chat/:chatId?", sessionMiddleware, authMiddleware, async c => {
+  const user = c.get("user");
   const { chatId } = c.req.param();
 
   if (!chatId) {
     const newChat = await prisma.chat.create({
-      data: {},
+      data: {
+        userId: user?.id ?? null,
+      },
     });
 
     return c.redirect(`/chat/${newChat.id}`);
@@ -40,6 +43,7 @@ app.get("/chat/:chatId?", sessionMiddleware, authMiddleware, async c => {
   }
 
   const chats = await prisma.chat.findMany({
+    where: { userId: user?.id },
     select: { id: true, title: true },
   });
 

@@ -34,12 +34,14 @@ export const updateChatTitle = async (c: Context) => {
 export const createChat = async (c: Context) => {
   const { history, chatId } = await c.req.json();
   const userMessage = history[history.length - 1];
+  const user = c.get("user");
 
   await prisma.chatMessage.create({
     data: {
       content: userMessage.content,
       role: "user",
       chatId,
+      senderId: user.id,
     },
   });
 
@@ -68,6 +70,7 @@ export const createChat = async (c: Context) => {
         content: completedMessage,
         role: "assistant",
         chatId,
+        senderId: user.id,
       },
     });
   });

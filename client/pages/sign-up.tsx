@@ -76,7 +76,7 @@ function SignUp() {
           </button>
           <p class="block antialiased font-sans text-sm leading-normal text-gray-700 !mt-4 text-center font-normal">
             Already signup?{" "}
-            <a href="#" class="font-medium text-gray-900">
+            <a href="/sign-in" class="font-medium text-gray-900">
               Signin account
             </a>
           </p>
