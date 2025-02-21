@@ -8,6 +8,8 @@ import { PrismaClient } from "@prisma/client";
 
 import ChatPage from "../view/chat";
 import IndexPage from "../view";
+import SignInPage from "../view/sign-in";
+import SignUpPage from "../view/sign-up";
 
 const app = new Hono();
 const prisma = new PrismaClient();
@@ -53,6 +55,9 @@ app.get("/chat/:chatId?", async c => {
   );
 });
 
-app.get("/chat", c => c.html(<IndexPage />));
+app.get("/sign-in", c => c.html(<SignInPage />));
+app.get("/sign-up", c => c.html(<SignUpPage />));
+
+app.get("/", c => c.html(<IndexPage />));
 
 export default app;

@@ -1,5 +1,6 @@
 import { globSync } from "node:fs";
 import { fileURLToPath, URL } from "url";
+import path from "path";
 
 import { defineConfig } from "vite";
 import devServer from "@hono/vite-dev-server";
@@ -38,6 +39,8 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./", import.meta.url)),
+        "@/components": path.resolve(__dirname, "./client/components"),
+        "@/lib": path.resolve(__dirname, "./lib"),
       },
     },
   };
