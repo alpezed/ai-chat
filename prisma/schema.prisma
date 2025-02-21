@@ -13,6 +13,15 @@ datasource db {
   url      = "file:./app.db"
 }
 
+model User {
+  id        Int           @id @default(autoincrement())
+  email     String        @unique
+  name      String?
+  chats     Chat[]
+  messages  ChatMessage[]
+  createdAd DateTime      @default(now())
+}
+
 model ChatMessage {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -21,14 +30,17 @@ model ChatMessage {
   role      Role
   chat      Chat     @relation(fields: [chatId], references: [id])
   chatId    String
+  sender    User?    @relation(fields: [senderId], references: [id])
+  senderId  Int?
 }
 
 model Chat {
   id        String        @id @default(cuid())
-  createdAd DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
   title     String        @default("New Chat")
   messages  ChatMessage[]
+  users     User[]
+  createdAd DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 }
 
 enum Role {
