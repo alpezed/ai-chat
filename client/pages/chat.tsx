@@ -29,18 +29,6 @@ function Chat() {
     useState<ChatMessage[]>(initialMessages);
   const [chats, setChats] = useState(initialChats);
 
-  // const s = authClient.useSession();
-  // console.log({ s });
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const accounts = await authClient.listAccounts();
-  //     const { data: session, error } = await authClient.getSession();
-
-  //     console.log({ accounts, session });
-  //   })();
-  // }, []);
-
   const onSubmit = async (event: Event) => {
     event.preventDefault();
     const form = event.target as HTMLFormElement;

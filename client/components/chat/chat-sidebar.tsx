@@ -99,12 +99,38 @@ function ChatUser() {
     })();
   }, []);
 
+  async function onSignout() {
+    await authClient.signOut();
+    window.location.href = "/sign-in";
+  }
+
   return (
-    <div className="p-4 text-sm border-t border-gray-200 flex items-center gap-3">
-      <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
-        {user?.name?.[0]}
+    <div className="p-4 text-sm border-t border-gray-200">
+      <div class="dropdown" data-placement="top-start">
+        <button
+          class="flex items-center gap-3 cursor-pointer"
+          data-toggle="dropdown"
+        >
+          <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+            {user?.name?.[0]}
+          </div>
+          <span className="font-medium">{user?.name}</span>
+        </button>
+        <div
+          data-role="menu"
+          class="hidden w-48 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl shadow-gray-950/[0.025] p-1 z-10"
+        >
+          <button class="w-full cursor-pointer text-left block px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md">
+            Settings
+          </button>
+          <button
+            class="w-full cursor-pointer text-left block px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md"
+            onClick={onSignout}
+          >
+            Logout
+          </button>
+        </div>
       </div>
-      <span className="font-medium">{user?.name}</span>
     </div>
   );
 }
