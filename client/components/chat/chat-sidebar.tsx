@@ -75,7 +75,7 @@ export function ChatSidebar({
           >
             <div className="flex items-center gap-3">
               <div className="flex-1 overflow-hidden">
-                <div className="truncate text-sm font-medium text-gray-900">
+                <div className="truncate text-sm font-medium text-gray-600">
                   {chat.title}
                 </div>
               </div>

@@ -25,6 +25,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.0.4",
     "ai": "^4.1.24",
+    "clsx": "^2.1.1",
     "hono": "^4.6.20",
     "markdown-it": "^14.1.0",
     "marked": "^15.0.6",

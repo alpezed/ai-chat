@@ -1,4 +1,10 @@
+import { useState } from "hono/jsx";
+import { cx, css } from "hono/css";
+import { cn } from "@/lib/utils";
+
 export function ChatInput({ onSubmit }: { onSubmit: (event: Event) => void }) {
+  const [input, setInput] = useState("");
+
   return (
     <form
       onSubmit={onSubmit}
@@ -38,9 +44,19 @@ export function ChatInput({ onSubmit }: { onSubmit: (event: Event) => void }) {
                       className="h-full w-full border-none bg-transparent text-body font-body text-default-font outline-none"
                       placeholder="Chat with me..."
                       name="prompt"
+                      onChange={(e: any) => setInput(e.target.value)}
                     />
                   </div>
-                  <button className="text-body font-body text-neutral-400">
+                  <button
+                    disabled={input.length === 0}
+                    className={cn(
+                      "text-body cursor-pointer font-body hover:text-neutral-500",
+                      {
+                        "text-neutral-400 cursor-not-allowed":
+                          input.length === 0,
+                      }
+                    )}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="1em"
@@ -61,7 +77,7 @@ export function ChatInput({ onSubmit }: { onSubmit: (event: Event) => void }) {
             </div>
           </div>
         </div>
-        <span className="w-full text-caption font-caption text-subtext-color text-center">
+        <span className="w-full text-xs text-gray-500/80 text-caption font-caption text-subtext-color text-center">
           AI can make mistakes. Always double check the source.
         </span>
       </div>
