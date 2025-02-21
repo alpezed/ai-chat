@@ -26,6 +26,9 @@ function SignIn() {
       },
       {
         onError: ctx => {
+          if (ctx.error.status === 403) {
+            alert("Please verify your email address");
+          }
           alert(ctx.error.message);
         },
       }

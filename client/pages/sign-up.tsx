@@ -21,7 +21,7 @@ function SignUp() {
     const { data, error } = await authClient.signUp.email(
       {
         ...formValue,
-        callbackURL: "/", // a url to redirect to after the user verifies their email (optional)
+        callbackURL: "/",
       },
       {
         onRequest: ctx => {

@@ -6,15 +6,19 @@ import rehypeHighlight from "rehype-highlight";
 import { unified } from "unified";
 import { PrismaClient } from "@prisma/client";
 
+import { sessionMiddleware } from "@/server/middleware/session";
+import { authMiddleware, unAuthMiddleware } from "@/server/middleware/view";
+import type { AuthSession } from "@/server/types/session";
+
 import ChatPage from "../view/chat";
 import IndexPage from "../view";
 import SignInPage from "../view/sign-in";
 import SignUpPage from "../view/sign-up";
 
-const app = new Hono();
 const prisma = new PrismaClient();
+const app = new Hono<{ Variables: AuthSession }>();
 
-app.get("/chat/:chatId?", async c => {
+app.get("/chat/:chatId?", sessionMiddleware, authMiddleware, async c => {
   const { chatId } = c.req.param();
 
   if (!chatId) {
@@ -55,8 +59,13 @@ app.get("/chat/:chatId?", async c => {
   );
 });
 
-app.get("/sign-in", c => c.html(<SignInPage />));
-app.get("/sign-up", c => c.html(<SignUpPage />));
+app.get("/sign-in", sessionMiddleware, unAuthMiddleware, c =>
+  c.html(<SignInPage />)
+);
+
+app.get("/sign-up", sessionMiddleware, unAuthMiddleware, c =>
+  c.html(<SignUpPage />)
+);
 
 app.get("/", c => c.html(<IndexPage />));
 

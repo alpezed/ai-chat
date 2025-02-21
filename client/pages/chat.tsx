@@ -1,4 +1,4 @@
-import { render, useState } from "hono/jsx/dom";
+import { render, use, useEffect, useState } from "hono/jsx/dom";
 import type { ChatMessage, Chat as PrismaChat } from "@prisma/client";
 
 import { client } from "@/lib/client";
@@ -7,6 +7,7 @@ import { ChatSidebar } from "../components/chat/chat-sidebar";
 import { ChatHeader } from "../components/chat/chat-header";
 import { ChatInput } from "../components/chat/chat-input";
 import { ChatMessages } from "../components/chat/chat-messages";
+import { authClient } from "@/lib/auth-client";
 
 declare global {
   interface Window {
@@ -27,6 +28,18 @@ function Chat() {
   const [chatMessages, setChatMessages] =
     useState<ChatMessage[]>(initialMessages);
   const [chats, setChats] = useState(initialChats);
+
+  // const s = authClient.useSession();
+  // console.log({ s });
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const accounts = await authClient.listAccounts();
+  //     const { data: session, error } = await authClient.getSession();
+
+  //     console.log({ accounts, session });
+  //   })();
+  // }, []);
 
   const onSubmit = async (event: Event) => {
     event.preventDefault();

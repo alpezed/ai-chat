@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
+import { logger } from "hono/logger";
 
 import chatRoutes from "./routes/chat";
 import viewRoutes from "./routes/views";
@@ -7,6 +8,7 @@ import { auth } from "@/lib/auth";
 
 const app = new Hono();
 
+app.use(logger());
 app.use("/static/*", serveStatic({ root: "../" }));
 
 app.route("/", viewRoutes);
