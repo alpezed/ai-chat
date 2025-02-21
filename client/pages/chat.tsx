@@ -106,7 +106,7 @@ function Chat() {
     <div className="flex h-screen w-screen">
       <ChatSidebar chats={chats} />
       <div className="flex-1 flex flex-col">
-        <div className="container prose prose-gray prose-sm prose-pre:text-base max-w-none flex h-full w-full flex-col items-center gap-6 bg-default-background pt-12 pr-6 pl-6">
+        <div className="container prose prose-gray prose-a:no-underline prose-sm prose-pre:text-base max-w-none flex h-full w-full flex-col items-center gap-6 bg-default-background pt-12 pr-6 pl-6">
           <ChatHeader chatId={chatId} />
           <div className="flex w-full max-w-[768px] grow shrink-0 basis-0 flex-col items-start relative">
             <ChatMessages messages={chatMessages} />
