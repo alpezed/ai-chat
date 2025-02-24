@@ -21,7 +21,7 @@ function SignUp() {
     const { data, error } = await authClient.signUp.email(
       {
         ...formValue,
-        callbackURL: "/",
+        callbackURL: "/chat",
       },
       {
         onRequest: ctx => {
@@ -29,6 +29,8 @@ function SignUp() {
         },
         onSuccess: ctx => {
           console.log("--onSuccess", ctx);
+          window.location.href = "/sign-in";
+          // alert("Sign up successful, Verify you account!");
         },
         onError: ctx => {
           alert(ctx.error.message);

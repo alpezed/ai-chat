@@ -159,7 +159,7 @@ export function ChatSidebar({
   chats: Pick<Chat, "id" | "title">[];
 }) {
   return (
-    <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col">
+    <div class="w-64 bg-gray-50 border-r border-gray-200 flex flex-col">
       <ChatTopBar />
       <ChatNewButton />
       <ChatList chats={chats} />
