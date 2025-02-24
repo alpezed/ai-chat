@@ -5,3 +5,7 @@ Content-Type: application/json
   "chatId": "cm7czg4ao0005b7vvptk5wauy",
   "history": [{ type: "user", content: "How are you?" }]
 }
+
+### Delete Chat
+
+DELETE http://localhost:3001/api/v1/chat/cm7e1nvox0001b7hscig3wpjp

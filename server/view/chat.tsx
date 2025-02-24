@@ -4,9 +4,9 @@ import type { ChatMessage, Chat as PrismaChat } from "@prisma/client";
 import Layout from "./shared/layout";
 
 type ChatProps = PropsWithChildren<{
-  chatId: string;
-  messages: ChatMessage[];
-  chats: Pick<PrismaChat, "id" | "title">[];
+  chatId?: string;
+  messages?: ChatMessage[];
+  chats?: Pick<PrismaChat, "id" | "title">[];
 }>;
 
 export default function ChatPage(props: ChatProps) {

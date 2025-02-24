@@ -7,7 +7,6 @@ import { ChatSidebar } from "../components/chat/chat-sidebar";
 import { ChatHeader } from "../components/chat/chat-header";
 import { ChatInput } from "../components/chat/chat-input";
 import { ChatMessages } from "../components/chat/chat-messages";
-import { authClient } from "@/lib/auth-client";
 
 declare global {
   interface Window {
@@ -25,9 +24,10 @@ const initialMessages = window.messages;
 const initialChats = window.chats;
 
 function Chat() {
-  const [chatMessages, setChatMessages] =
-    useState<ChatMessage[]>(initialMessages);
-  const [chats, setChats] = useState(initialChats);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(
+    initialMessages ?? []
+  );
+  const [chats, setChats] = useState(initialChats ?? []);
 
   const onSubmit = async (event: Event) => {
     event.preventDefault();
@@ -39,12 +39,9 @@ function Chat() {
       return;
     }
 
-    if (chatMessages.length === 0) {
+    if (chatMessages?.length === 0 && chatId) {
       $chatTitle({
-        json: {
-          chatId,
-          prompt,
-        },
+        json: { chatId, prompt },
       })
         .then(response => response.json())
         .then(data => {
@@ -67,8 +64,8 @@ function Chat() {
 
     const response = await $post({
       json: {
-        history: [...chatMessages, userMessage],
-        chatId,
+        history: chatMessages.concat(userMessage),
+        chatId: chatId ?? undefined,
       },
     });
 
@@ -88,7 +85,7 @@ function Chat() {
       } as ChatMessage,
     ]);
 
-    while (true) {
+    while (reader) {
       const { done, value } = await reader.read();
       if (done) {
         return;
@@ -109,7 +106,7 @@ function Chat() {
 
   return (
     <div className="flex h-screen w-screen">
-      <ChatSidebar chats={chats} />
+      {chatId && <ChatSidebar chats={chats} />}
       <div className="flex-1 flex flex-col">
         <div className="container prose prose-gray prose-a:no-underline prose-sm prose-pre:text-base max-w-none flex h-full w-full flex-col items-center gap-6 bg-default-background pt-12 pr-6 pl-6">
           <ChatHeader chatId={chatId} />

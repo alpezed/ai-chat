@@ -7,7 +7,7 @@ import { unified } from "unified";
 import { PrismaClient } from "@prisma/client";
 
 import { sessionMiddleware } from "@/server/middleware/session";
-import { authMiddleware, unAuthMiddleware } from "@/server/middleware/view";
+import { unAuthMiddleware } from "@/server/middleware/view";
 import type { AuthSession } from "@/server/types/session";
 
 import ChatPage from "../view/chat";
@@ -18,11 +18,16 @@ import SignUpPage from "../view/sign-up";
 const prisma = new PrismaClient();
 const app = new Hono<{ Variables: AuthSession }>();
 
-app.get("/chat/:chatId?", sessionMiddleware, authMiddleware, async c => {
+app.get("/chat/:chatId?", sessionMiddleware, async c => {
   const user = c.get("user");
   const { chatId } = c.req.param();
 
-  if (!chatId) {
+  if (!chatId && !user) {
+    c.redirect("/chat");
+    return c.html(<ChatPage />);
+  }
+
+  if (!chatId && user) {
     const newChat = await prisma.chat.create({
       data: {
         userId: user?.id ?? null,

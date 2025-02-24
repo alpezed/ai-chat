@@ -36,14 +36,16 @@ export const createChat = async (c: Context) => {
   const userMessage = history[history.length - 1];
   const user = c.get("user");
 
-  await prisma.chatMessage.create({
-    data: {
-      content: userMessage.content,
-      role: "user",
-      chatId,
-      senderId: user.id,
-    },
-  });
+  if (user) {
+    await prisma.chatMessage.create({
+      data: {
+        content: userMessage.content,
+        role: "user",
+        chatId,
+        senderId: user.id,
+      },
+    });
+  }
 
   const { textStream } = await generateStream({
     model: togetherAiModel,
@@ -61,18 +63,19 @@ export const createChat = async (c: Context) => {
         .use(rehypeHighlight)
         .use(rehypeStringify)
         .process(completedMessage);
-
       stream.write(String(htmlFile));
     }
 
-    await prisma.chatMessage.create({
-      data: {
-        content: completedMessage,
-        role: "assistant",
-        chatId,
-        senderId: user.id,
-      },
-    });
+    if (user) {
+      await prisma.chatMessage.create({
+        data: {
+          content: completedMessage,
+          role: "assistant",
+          chatId,
+          senderId: user.id,
+        },
+      });
+    }
   });
 };
 
