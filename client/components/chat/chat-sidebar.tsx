@@ -89,7 +89,7 @@ function ChatList({ chats }: { chats: Pick<Chat, "id" | "title">[] }) {
   );
 }
 
-function ChatUser() {
+export function ChatUser() {
   const [user, setUser] = useState<User>();
 
   useEffect(() => {

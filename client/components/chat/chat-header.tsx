@@ -1,3 +1,4 @@
+import { UserAvatar } from "@/client/components/user-avatar";
 import { client } from "@/lib/client";
 
 export function ChatHeader({ chatId }: { chatId: string }) {
@@ -51,7 +52,7 @@ export function ChatHeader({ chatId }: { chatId: string }) {
           </span>
         </button>
       </div>
-      {window.chatId && (
+      {window.chatId ? (
         <div class="flex items-center gap-2">
           <div class="dropdown" data-placement="bottom-end">
             <button
@@ -92,6 +93,10 @@ export function ChatHeader({ chatId }: { chatId: string }) {
             </div>
           </div>
         </div>
+      ) : (
+        <a href="/sign-in" class="cursor-pointer">
+          <UserAvatar />
+        </a>
       )}
     </div>
   );

@@ -42,6 +42,10 @@ app.get("/chat/:chatId?", sessionMiddleware, async c => {
     include: { messages: true },
   });
 
+  if (!chat && !user) {
+    return c.redirect(`/chat`);
+  }
+
   if (!chat) {
     c.status(404);
     return c.html(<h1>Chat not found</h1>);
